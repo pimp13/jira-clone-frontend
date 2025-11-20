@@ -9,7 +9,7 @@ export default function Home() {
       <Button variant="secondary">Click Me!</Button>
       <Button variant="ghost">Click Me!</Button>
       <Button variant="muted">Click Me!</Button>
-      <Button variant="teritrary">Click Me!</Button>
+      <Button variant="teritary">Click Me!</Button>
       <Button variant="outline">Click Me!</Button>
       <TestComponent />
     </div>

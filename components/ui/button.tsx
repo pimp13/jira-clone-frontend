@@ -27,7 +27,7 @@ const buttonVariants = cva(
           "border-transparent shadow-none hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         muted: "bg-neutral-200 text-neutral-600 hover:bg-neutral-200/80",
-        teritrary:
+        teritary:
           "bg-blue-100 text-blue-600 border-transparent hover:bg-blue-200 shadow-none",
       },
       size: {
