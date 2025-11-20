@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         // default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        default:
+        primary:
           "bg-gradient-to-b from-blue-600 to-blue-700 text-primary-foreground hover:from-blue-700 hover:to-blue-700",
         // destructive:
         //   "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
@@ -40,7 +40,7 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "primary",
       size: "default",
     },
   }
