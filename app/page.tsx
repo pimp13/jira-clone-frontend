@@ -1,16 +1,22 @@
-import { Button } from "@/components/ui/button";
-import { TestComponent } from "@/features/test";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { TestComponent } from '@/features/test';
 
 export default function Home() {
   return (
     <div>
+      <Input placeholder="hello input" />
       <Button>Click Me!</Button>
-      <Button variant="destructive">Click Me!</Button>
+      <Button disabled variant="destructive">
+        Click Me!
+      </Button>
       <Button variant="secondary">Click Me!</Button>
       <Button variant="ghost">Click Me!</Button>
       <Button variant="muted">Click Me!</Button>
       <Button variant="teritary">Click Me!</Button>
-      <Button variant="outline">Click Me!</Button>
+      <Button size="lg" variant="outline">
+        Click Me!
+      </Button>
       <TestComponent />
     </div>
   );
