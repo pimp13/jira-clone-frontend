@@ -1,3 +1,4 @@
+import { DottedSeparator } from '@/components/dotted-separator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -16,6 +17,8 @@ export default function Home() {
       <Button size="lg" variant="outline">
         Click Me!
       </Button>
+
+      <DottedSeparator />
     </div>
   );
 }
