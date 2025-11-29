@@ -22,7 +22,7 @@ export const SignUpCard = () => {
         <CardDescription>
           By signing up, you agree to our{' '}
           <Link href="/privacy">
-            <span className='text-blue-700'>Privacy Policy</span>
+            <span className="text-blue-700">Privacy Policy</span>
           </Link>
         </CardDescription>
       </CardHeader>
