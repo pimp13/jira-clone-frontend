@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { TestComponent } from '@/features/test';
 
 export default function Home() {
   return (
@@ -17,7 +16,6 @@ export default function Home() {
       <Button size="lg" variant="outline">
         Click Me!
       </Button>
-      <TestComponent />
     </div>
   );
 }
