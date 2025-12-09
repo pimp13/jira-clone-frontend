@@ -23,6 +23,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import Link from 'next/link';
+import { axios } from '@/lib/axios';
+import { useBackendApi } from '@/hooks/use-backend-api';
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required').trim(),
@@ -40,8 +42,10 @@ export const SignUpCard = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log('form values =>', values);
+    const { data: resp } = await axios.get('http://localhost:5001/api/v1/ping');
+    console.log('resp', resp);
   };
 
   return (
