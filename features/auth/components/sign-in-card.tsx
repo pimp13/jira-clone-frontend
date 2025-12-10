@@ -19,6 +19,7 @@ import {
 import Link from 'next/link';
 import { axios } from '@/lib/axios';
 import { Toaster, toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   email: z.string().trim().min(1, 'Email is required').email(),
@@ -26,6 +27,8 @@ const formSchema = z.object({
 });
 
 export const SignInCard = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,6 +46,7 @@ export const SignInCard = () => {
 
       if (resp.status === 201) {
         toast.success(resp.data?.message ?? 'Login is successfully!');
+        router.push('/dashboard');
       }
     } catch (err: any) {
       const errMsg =
