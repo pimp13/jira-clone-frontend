@@ -1,6 +1,3 @@
-import { getEnv } from '@/lib/get-env';
+import { getPublicEnv } from './get-env';
 
-export const API_URL =
-  getEnv('NEXT_PUBLIC_BASE_GO_BACKEND_API') === 'UNKNOWN'
-    ? 'http://127.0.0.1:5001/api'
-    : getEnv('NEXT_PUBLIC_API_URL');
+export const API_URL = getPublicEnv('NEXT_PUBLIC_API_URL');

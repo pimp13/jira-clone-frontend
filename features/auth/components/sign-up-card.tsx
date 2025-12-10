@@ -5,6 +5,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import { DottedSeparator } from '@/components/dotted-separator';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,7 +25,8 @@ import {
 } from '@/components/ui/form';
 import Link from 'next/link';
 import { axios } from '@/lib/axios';
-import { useBackendApi } from '@/hooks/use-backend-api';
+import toast, { Toaster } from 'react-hot-toast';
+import { ApiResponseType } from '@/types/api';
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required').trim(),
@@ -33,6 +35,8 @@ const formSchema = z.object({
 });
 
 export const SignUpCard = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,130 +47,154 @@ export const SignUpCard = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log('form values =>', values);
-    const { data: resp } = await axios.get('http://localhost:5001/api/v1/ping');
-    console.log('resp', resp);
+    try {
+      const resp = await axios.post<ApiResponse<ApiResponseType.RegisterUser>>(
+        `/v1/auth/register`,
+        values,
+      );
+
+      if (resp.status === 201) {
+        toast.success(resp.data?.message ?? 'Register is successfully!');
+        router.push('/sign-in');
+      }
+    } catch (err: any) {
+      const errorMessage =
+        (err.response?.data as ErrorResponse)?.message ?? 'Server Error!!';
+      toast.error(errorMessage);
+    }
   };
 
   return (
-    <Card className="w-full h-full md:w-[487px] border-none shadow-none">
-      <CardHeader className="flex flex-col items-center justify-center text-center p-7">
-        <CardTitle className="text-2xl">Sign Up</CardTitle>
-        <CardDescription>
-          By signing up, you agree to our{' '}
-          <Link href="/privacy">
-            <span className="text-blue-700">Privacy Policy</span>
-          </Link>{' '}
-          and{' '}
-          <Link href="/privacy">
-            <span className="text-blue-700">Terms of Service.</span>
-          </Link>
-        </CardDescription>
-      </CardHeader>
+    <>
+      <Card className="w-full h-full md:w-[487px] border-none shadow-none">
+        <CardHeader className="flex flex-col items-center justify-center text-center p-7">
+          <CardTitle className="text-2xl">Sign Up</CardTitle>
+          <CardDescription>
+            By signing up, you agree to our{' '}
+            <Link href="/privacy">
+              <span className="text-blue-700">Privacy Policy</span>
+            </Link>{' '}
+            and{' '}
+            <Link href="/privacy">
+              <span className="text-blue-700">Terms of Service.</span>
+            </Link>
+          </CardDescription>
+        </CardHeader>
 
-      <div className="px-7">
-        <DottedSeparator />
-      </div>
+        <div className="px-7">
+          <DottedSeparator />
+        </div>
 
-      <CardContent className="p-7">
-        <Form {...form}>
-          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-            {/* Name input */}
-            <FormField
-              name="name"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="text"
-                      placeholder="Enter your name"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <CardContent className="p-7">
+          <Form {...form}>
+            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+              {/* Name input */}
+              <FormField
+                name="name"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="text"
+                        placeholder="Enter your name"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            {/* Email input */}
-            <FormField
-              name="email"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="email"
-                      placeholder="Enter email address"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              {/* Email input */}
+              <FormField
+                name="email"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="email"
+                        placeholder="Enter email address"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            {/* Password input */}
-            <FormField
-              name="password"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="password"
-                      placeholder="Enter your password"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              {/* Password input */}
+              <FormField
+                name="password"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="password"
+                        placeholder="Enter your password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Button disabled={false} size="lg" className="w-full">
-              Login
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-      <div className="px-7">
-        <DottedSeparator />
-      </div>
-      <CardContent className="p-7 flex flex-col gap-y-4">
-        <Button
-          disabled={false}
-          variant="secondary"
-          size="lg"
-          className="w-full"
-        >
-          <FcGoogle className="mr-2 size-5" />
-          Login with Google
-        </Button>
-        <Button
-          disabled={false}
-          variant="secondary"
-          size="lg"
-          className="w-full"
-        >
-          <FaGithub className="mr-2 size-5" />
-          Login with Google
-        </Button>
-      </CardContent>
+              <Button
+                type="submit"
+                disabled={false}
+                size="lg"
+                className="w-full"
+              >
+                Send
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+        <div className="px-7">
+          <DottedSeparator />
+        </div>
+        <CardContent className="p-7 flex flex-col gap-y-4">
+          <Button
+            disabled={false}
+            variant="secondary"
+            size="lg"
+            className="w-full"
+          >
+            <FcGoogle className="mr-2 size-5" />
+            Login with Google
+          </Button>
+          <Button
+            disabled={false}
+            variant="secondary"
+            size="lg"
+            className="w-full"
+          >
+            <FaGithub className="mr-2 size-5" />
+            Login with Google
+          </Button>
+        </CardContent>
 
-      <div className="px-7">
-        <DottedSeparator />
-      </div>
+        <div className="px-7">
+          <DottedSeparator />
+        </div>
 
-      <CardContent className="px-7 flex items-center justify-center">
-        <p>
-          Already have an account?
-          <Link href="/sign-in">
-            <span className="text-blue-700">&nbsp;Sign In</span>
-          </Link>
-        </p>
-      </CardContent>
-    </Card>
+        <CardContent className="px-7 flex items-center justify-center">
+          <p>
+            Already have an account?
+            <Link href="/sign-in">
+              <span className="text-blue-700">&nbsp;Sign In</span>
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
+      <Toaster
+        toastOptions={{
+          className: 'text-[0.9rem]',
+        }}
+      />
+    </>
   );
 };
