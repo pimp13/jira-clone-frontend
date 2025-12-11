@@ -1,7 +1,7 @@
 'use client';
 
 import { Loader, LogOutIcon } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,7 @@ import { DottedSeparator } from '@/components/dotted-separator';
 import {} from '@/hooks/use-backend-api';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useLogout } from '../logout';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
 export const UserButton = () => {
@@ -91,13 +91,6 @@ export const UserButton = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <Toaster
-        gutter={8}
-        toastOptions={{
-          className: 'text-[0.9rem]',
-        }}
-      />
     </>
   );
 };

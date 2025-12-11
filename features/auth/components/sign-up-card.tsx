@@ -148,7 +148,7 @@ export const SignUpCard = () => {
                 size="lg"
                 className="w-full"
               >
-                Send
+                Register
               </Button>
             </form>
           </Form>
@@ -190,11 +190,6 @@ export const SignUpCard = () => {
           </p>
         </CardContent>
       </Card>
-      <Toaster
-        toastOptions={{
-          className: 'text-[0.9rem]',
-        }}
-      />
     </>
   );
 };

@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/form';
 import Link from 'next/link';
 import { axios } from '@/lib/axios';
-import { Toaster, toast } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
@@ -148,13 +148,6 @@ export const SignInCard = () => {
           </p>
         </CardContent>
       </Card>
-
-      <Toaster
-        gutter={8}
-        toastOptions={{
-          className: 'text-[0.9rem]',
-        }}
-      />
     </>
   );
 };
