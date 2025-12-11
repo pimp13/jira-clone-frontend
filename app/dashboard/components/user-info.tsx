@@ -1,22 +1,9 @@
 'use client';
 
-import { ApiResponseType } from '@/types/api';
-import { useBackendApi } from '@/hooks/use-backend-api';
+import { UserButton } from '@/features/auth/components/user-button';
 
 export const UserInfo = () => {
-  const { data, isLoading } = useBackendApi<
-    ApiResponse<ApiResponseType.UserInfo>
-  >('/v1/auth/info', { method: 'get' });
+  // const { user, isLoading } = useCurrentUser();
 
-  return (
-    <div>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          <p>Email: {data?.data.email}</p>
-        </div>
-      )}
-    </div>
-  );
+  return <UserButton />;
 };
