@@ -16,7 +16,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           <section className="mx-auto max-w-screen-2xl h-full">
             {/* TODO: Navbar */}
 
-            <main className="h-full py-8 px-6 flex flex-col ">{children}</main>
+            <main className="h-full py-8 px-6 flex flex-col">{children}</main>
           </section>
         </section>
       </section>

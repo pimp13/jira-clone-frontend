@@ -35,7 +35,7 @@ axios.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      const logoutPath = '/next-api/logout';
+      const logoutPath = '/sign-in';
 
       if (isServer) {
         const { redirect } = await import('next/navigation');
