@@ -1,4 +1,5 @@
 import './globals.css';
+
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { cn } from '@/lib/utils';
@@ -18,6 +19,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.info(
+    'i love typescript i love backend and frontend and i love golang!',
+  );
+
   return (
     <html lang="en">
       <body className={cn(inter.className, 'antialiased min-h-screen')}>

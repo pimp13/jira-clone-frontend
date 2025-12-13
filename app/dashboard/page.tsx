@@ -1,7 +1,10 @@
-import { UserInfo } from './components/user-info';
 
 const DashboardPage = () => {
-  return <UserInfo />;
+  return (
+    <div>
+      hello dashboard page
+    </div>
+  )
 };
 
 export default DashboardPage;
