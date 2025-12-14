@@ -1,6 +1,7 @@
 'use client';
 
 import z from 'zod';
+import useSWRMutation from 'swr/mutation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { createWorkspaceSchema } from '../schemas';
@@ -21,9 +22,13 @@ import toast from 'react-hot-toast';
 
 interface CreateWorkspaceFormProps {
   onCancel?: () => void;
+  onSuccess?: () => void;
 }
 
-export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
+export const CreateWorkspaceForm = ({
+  onCancel,
+  onSuccess,
+}: CreateWorkspaceFormProps) => {
   const form = useForm<z.infer<typeof createWorkspaceSchema>>({
     resolver: zodResolver(createWorkspaceSchema),
     defaultValues: {
@@ -31,18 +36,55 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof createWorkspaceSchema>) => {
-    try {
-      const resp = await axios.post<ApiResponse<null>>('/v1/workspace', values);
-      if (resp.status === 201) {
-        toast.success(resp.data?.message ?? 'Login is successfully!');
+  const { trigger, isMutating } = useSWRMutation(
+    '/v1/workspace',
+    async (
+      url: string,
+      { arg }: { arg: z.infer<typeof createWorkspaceSchema> },
+    ) => {
+      const resp = await axios.post<ApiResponse<null>>(url, arg);
+      return resp.data;
+    },
+    {
+      // بعد از موفقیت، کش لیست workspaceها را revalidate کن
+      onSuccess: (data) => {
+        toast.success(data?.message ?? 'Workspace با موفقیت ایجاد شد!');
+
         form.reset();
-      }
-    } catch (err: any) {
-      const errMsg =
-        (err.response?.data as ErrorResponse)?.message ?? 'Server Error!!';
-      toast.error(errMsg);
-    }
+        onSuccess?.(); // مثلاً modal بسته بشه
+
+        // revalidate لیست workspaceها (کلید دقیقاً همون کلید useSWR در صفحه لیست)
+        // اگر در جای دیگه از useSWR('/v1/workspace') استفاده کردید
+        // این کار لیست را به‌روز می‌کنه
+        // import { mutate } from 'swr' در سطح global
+        import('swr').then(({ mutate }) => {
+          mutate(
+            (key) => typeof key === 'string' && key.startsWith('/v1/workspace'),
+          );
+        });
+      },
+      onError: (err: any) => {
+        const errMsg =
+          (err.response?.data as ErrorResponse)?.message ??
+          'خطایی در سرور رخ داد!';
+        toast.error(errMsg);
+      },
+    },
+  );
+
+  const onSubmit = async (values: z.infer<typeof createWorkspaceSchema>) => {
+    // try {
+    //   const resp = await axios.post<ApiResponse<null>>('/v1/workspace', values);
+    //   if (resp.status === 201) {
+    //     toast.success(resp.data?.message ?? 'Login is successfully!');
+    //     form.reset();
+    //   }
+    // } catch (err: any) {
+    //   const errMsg =
+    //     (err.response?.data as ErrorResponse)?.message ?? 'Server Error!!';
+    //   toast.error(errMsg);
+    // }
+    await trigger(values);
   };
 
   return (
@@ -87,11 +129,12 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                 type="button"
                 size="lg"
                 onClick={onCancel}
+                disabled={isMutating}
               >
                 Cancel
               </Button>
-              <Button type="submit" size="lg">
-                Create Workspace
+              <Button type="submit" size="lg" disabled={isMutating}>
+                {isMutating ? 'Creating...' : 'Create'}
               </Button>
             </div>
           </form>
