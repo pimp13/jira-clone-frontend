@@ -1,10 +1,11 @@
+import { CreateWorkspaceForm } from '@/features/workspaces/components/create-workspace-form';
 
 const DashboardPage = () => {
   return (
-    <div>
-      hello dashboard page
-    </div>
-  )
+    <section>
+      <CreateWorkspaceForm />
+    </section>
+  );
 };
 
 export default DashboardPage;
