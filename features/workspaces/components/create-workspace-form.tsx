@@ -2,6 +2,7 @@
 
 import z from 'zod';
 import useSWRMutation from 'swr/mutation';
+import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { createWorkspaceSchema } from '../schemas';
@@ -18,7 +19,6 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { axios } from '@/lib/axios';
-import toast from 'react-hot-toast';
 
 interface CreateWorkspaceFormProps {
   onCancel?: () => void;

@@ -1,4 +1,3 @@
-import { Toaster } from 'react-hot-toast';
 import { Navbar } from './components/navbar';
 import { Sidebar } from './components/sidebar';
 
@@ -24,13 +23,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           </section>
         </section>
       </section>
-
-      <Toaster
-        gutter={8}
-        toastOptions={{
-          className: 'text-[0.9rem]',
-        }}
-      />
     </>
   );
 };

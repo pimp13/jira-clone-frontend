@@ -1,4 +1,3 @@
-import { Toaster } from 'react-hot-toast';
 import { AuthNavbar } from './components/auth-navbar';
 
 type AuthLayoutProps = {
@@ -16,12 +15,6 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           </section>
         </section>
       </main>
-      <Toaster
-        gutter={8}
-        toastOptions={{
-          className: 'text-[0.9rem]',
-        }}
-      />
     </>
   );
 };

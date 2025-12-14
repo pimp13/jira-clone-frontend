@@ -34,17 +34,21 @@ axios.interceptors.request.use(async (config) => {
 axios.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
-      const logoutPath = '/sign-in';
+    const status = error.response?.status;
 
-      if (isServer) {
-        const { redirect } = await import('next/navigation');
-        redirect(logoutPath);
-      } else {
-        window.location.href = logoutPath;
+    if (status === 401) {
+      // فقط در کلاینت‌ساید redirect کنیم
+      if (!isServer) {
+        // بهترین روش در App Router: استفاده از replace برای جلوگیری از برگشت به صفحه قبلی
+        window.location.replace('/sign-in');
+        // یا اگر می‌خوای query string هم بفرستی (مثل redirect_back)
+        // window.location.replace(`/sign-in?redirect=${encodeURIComponent(window.location.pathname)}`);
       }
+      // اگر در سرور بود (مثل getServerSideProps یا Server Component fetch)، خطا رو پرتاب می‌کنیم
+      // تا صفحه 401 یا redirect در middleware یا layout مدیریت بشه (بهتره اونجا هندل کنی)
     }
 
+    // لاگ فقط در development
     if (process.env.NODE_ENV === 'development') {
       console.error('Axios Error:', error);
     }

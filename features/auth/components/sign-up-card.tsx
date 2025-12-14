@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/form';
 import Link from 'next/link';
 import { axios } from '@/lib/axios';
-import toast, { Toaster } from 'react-hot-toast';
+import { toast } from 'sonner';
 import { ApiResponseType } from '@/types/api';
 
 const formSchema = z.object({

@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/form';
 import Link from 'next/link';
 import { axios } from '@/lib/axios';
-import { toast } from 'react-hot-toast';
+import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
