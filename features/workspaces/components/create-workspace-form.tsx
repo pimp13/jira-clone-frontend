@@ -48,7 +48,7 @@ export const CreateWorkspaceForm = ({
     {
       // بعد از موفقیت، کش لیست workspaceها را revalidate کن
       onSuccess: (data) => {
-        toast.success(data?.message ?? 'Workspace با موفقیت ایجاد شد!');
+        toast.success(data?.message ?? 'Workspace is created successfully!');
 
         form.reset();
         onSuccess?.(); // مثلاً modal بسته بشه
@@ -65,25 +65,13 @@ export const CreateWorkspaceForm = ({
       },
       onError: (err: any) => {
         const errMsg =
-          (err.response?.data as ErrorResponse)?.message ??
-          'خطایی در سرور رخ داد!';
+          (err.response?.data as ErrorResponse)?.message ?? 'Server Error!';
         toast.error(errMsg);
       },
     },
   );
 
   const onSubmit = async (values: z.infer<typeof createWorkspaceSchema>) => {
-    // try {
-    //   const resp = await axios.post<ApiResponse<null>>('/v1/workspace', values);
-    //   if (resp.status === 201) {
-    //     toast.success(resp.data?.message ?? 'Login is successfully!');
-    //     form.reset();
-    //   }
-    // } catch (err: any) {
-    //   const errMsg =
-    //     (err.response?.data as ErrorResponse)?.message ?? 'Server Error!!';
-    //   toast.error(errMsg);
-    // }
     await trigger(values);
   };
 
