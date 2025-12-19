@@ -48,6 +48,7 @@ export const CreateWorkspaceForm = ({
       url: string,
       { arg }: { arg: z.infer<typeof createWorkspaceSchema> },
     ) => {
+      console.info('arg values', arg);
       const resp = await axios.post<ApiResponse<null>>(url, arg);
       return resp.data;
     },
@@ -78,7 +79,12 @@ export const CreateWorkspaceForm = ({
   );
 
   const onSubmit = async (values: z.infer<typeof createWorkspaceSchema>) => {
-    await trigger(values);
+    const finalValues = {
+      ...values,
+      image: values.imageUrl instanceof File ? values.imageUrl : '',
+    };
+
+    await trigger(finalValues);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
