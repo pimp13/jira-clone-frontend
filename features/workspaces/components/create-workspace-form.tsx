@@ -4,7 +4,7 @@ import z from 'zod';
 import useSWRMutation from 'swr/mutation';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { createWorkspaceSchema } from '../schemas';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -92,9 +92,32 @@ export const CreateWorkspaceForm = ({
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-y-4">
               {/* Workspace name input */}
-              <FormField
+              {/* Handle input */}
+              {/* <FormField
                 name="name"
                 control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Workspace Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="text"
+                        placeholder="Enter workspace name"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              /> */}
+
+              {/* Handle input by Controller */}
+              <Controller
+                control={form.control}
+                rules={{
+                  required: true,
+                }}
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Workspace Name</FormLabel>
