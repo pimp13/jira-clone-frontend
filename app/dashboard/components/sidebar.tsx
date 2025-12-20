@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Navigation } from './navigation';
 import { LogoHeight, LogoWidth } from '@/utils/const';
 import { DottedSeparator } from '@/components/dotted-separator';
+import { WorkspaceSwitcher } from '@/features/workspaces/components/workspace-switcher';
 
 export const Sidebar = () => {
   return (
@@ -16,6 +17,10 @@ export const Sidebar = () => {
           height={LogoHeight}
         />
       </Link>
+
+      <DottedSeparator className="my-4" />
+
+      <WorkspaceSwitcher />
 
       <DottedSeparator className="my-4" />
 
