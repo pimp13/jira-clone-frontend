@@ -1,5 +1,6 @@
 'use client';
 
+<<<<<<< HEAD
 import z from 'zod';
 import useSWRMutation from 'swr/mutation';
 import { toast } from 'sonner';
@@ -8,7 +9,12 @@ import { useForm, Controller } from 'react-hook-form';
 import { createWorkspaceSchema } from '../schemas';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+=======
+>>>>>>> 250005a7df63ebcf90aa754a35b583329bc11809
 import { DottedSeparator } from '@/components/dotted-separator';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -17,8 +23,17 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { axios } from '@/lib/axios';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ImageIcon, UploadIcon } from 'lucide-react';
+import Image from 'next/image';
+import { useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import useSWRMutation from 'swr/mutation';
+import z from 'zod';
+import { createWorkspaceSchema } from '../schemas';
 
 interface CreateWorkspaceFormProps {
   onCancel?: () => void;
@@ -29,6 +44,8 @@ export const CreateWorkspaceForm = ({
   onCancel,
   onSuccess,
 }: CreateWorkspaceFormProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const form = useForm<z.infer<typeof createWorkspaceSchema>>({
     resolver: zodResolver(createWorkspaceSchema),
     defaultValues: {
@@ -42,6 +59,7 @@ export const CreateWorkspaceForm = ({
       url: string,
       { arg }: { arg: z.infer<typeof createWorkspaceSchema> },
     ) => {
+      console.info('arg values', arg);
       const resp = await axios.post<ApiResponse<null>>(url, arg);
       return resp.data;
     },
@@ -72,7 +90,19 @@ export const CreateWorkspaceForm = ({
   );
 
   const onSubmit = async (values: z.infer<typeof createWorkspaceSchema>) => {
-    await trigger(values);
+    const finalValues = {
+      ...values,
+      image: values.imageUrl instanceof File ? values.imageUrl : '',
+    };
+
+    await trigger(finalValues);
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      form.setValue('imageUrl', file);
+    }
   };
 
   return (
@@ -130,6 +160,63 @@ export const CreateWorkspaceForm = ({
                     </FormControl>
                     <FormMessage />
                   </FormItem>
+                )}
+              />
+
+              {/* Image file input */}
+              <FormField
+                control={form.control}
+                name="imageUrl"
+                render={({ field }) => (
+                  <div className="flex flex-col gap-y-2">
+                    <div className="flex items-center gap-x-5">
+                      {field.value ? (
+                        <div className="size-[72px] relative rounded-md overflow-hidden">
+                          <Image
+                            src={
+                              field.value instanceof File
+                                ? URL.createObjectURL(field.value)
+                                : field.value
+                            }
+                            alt="Logo"
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <Avatar className="size-[72px]">
+                          <AvatarFallback>
+                            <ImageIcon className="size-[36px] text-neutral-400" />
+                          </AvatarFallback>
+                        </Avatar>
+                      )}
+                      <div className="flex flex-col gap-y-2">
+                        <p className="text-sm font-medium">Workspace Icon</p>
+                        <p className="text-sm text-muted-foreground">
+                          JPG, PNG, SVG or JPEG, max size 1MB
+                        </p>
+                        <input
+                          hidden
+                          accept=".jpg, .png, .svg, .jpeg"
+                          type="file"
+                          onChange={handleImageChange}
+                          ref={inputRef}
+                          disabled={isMutating}
+                        />
+                        <Button
+                          type="button"
+                          onClick={() => inputRef.current?.click()}
+                          disabled={isMutating}
+                          variant="teritary"
+                          size="xs"
+                          // className="w-fit mt-2"
+                        >
+                          <UploadIcon className="size-4" />
+                          Upload Image
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
                 )}
               />
             </div>
