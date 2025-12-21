@@ -1,4 +1,5 @@
 export declare namespace ApiResponseType {
+  //* User Auth Types
   type RegisterUser = {
     email: string;
     joined_at: Date;
@@ -13,6 +14,19 @@ export declare namespace ApiResponseType {
     version: number;
     role: 'ADMIN' | 'USER';
     isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+
+  //* Workspace Type
+  type Workspace = {
+    id: string;
+    name: string;
+    slug: string;
+    ownerId: string;
+    imageUrl: string;
+    fullDestination: string;
+    owner: UserInfo;
     createdAt: Date;
     updatedAt: Date;
   };
