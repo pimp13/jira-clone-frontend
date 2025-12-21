@@ -48,23 +48,31 @@ export const WorkspaceSwitcher = () => {
       </div>
 
       <Select>
-        <SelectTrigger className="w-full bg-neutral-200 font-medium p-1">
-          <SelectValue placeholder="No workspace" />
+        <SelectTrigger className="w-full bg-neutral-200 font-medium p-3">
+          <SelectValue
+            placeholder={
+              workspaces?.data && workspaces.data.length !== 0
+                ? 'Show workspaces'
+                : 'No workspace'
+            }
+          />
         </SelectTrigger>
 
-        <SelectContent>
-          {workspaces?.data.map((workspace: ApiResponseType.Workspace) => (
-            <SelectItem value={workspace?.id} key={workspace?.id}>
-              <div className="flex justify-start items-center gap-3 font-medium">
-                <WorkspaceAvatar
-                  name={workspace?.name}
-                  fullDistination={workspace?.fullDestination}
-                />
-                <span className="truncate">{workspace.name}</span>
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
+        {workspaces?.data && (
+          <SelectContent>
+            {workspaces?.data.map((workspace: ApiResponseType.Workspace) => (
+              <SelectItem value={workspace?.id} key={workspace?.id}>
+                <div className="flex justify-start items-center gap-3 font-medium">
+                  <WorkspaceAvatar
+                    name={workspace?.name}
+                    fullDistination={workspace?.fullDestination}
+                  />
+                  <span className="truncate">{workspace.name}</span>
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        )}
       </Select>
     </section>
   );
