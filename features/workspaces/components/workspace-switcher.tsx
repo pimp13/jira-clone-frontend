@@ -1,6 +1,5 @@
 'use client';
 
-import { RiAddCircleFill } from 'react-icons/ri';
 import {
   Select,
   SelectContent,
@@ -8,13 +7,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useBackendApi } from '@/hooks/use-backend-api';
-import { ApiResponseType } from '@/types/api';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { useBackendApi } from '@/hooks/use-backend-api';
+import { ApiResponseType } from '@/types/api';
+import { RiAddCircleFill } from 'react-icons/ri';
 import { WorkspaceAvatar } from './workspace-avatar';
 
 export const WorkspaceSwitcher = () => {
@@ -25,7 +25,7 @@ export const WorkspaceSwitcher = () => {
   } = useBackendApi<ApiResponse<ApiResponseType.Workspace[]>>('/v1/workspace');
   console.info('workspaces', workspaces);
 
-  if (isLoading && workspaces?.ok) {
+  if (isLoading) {
     return <section>Loading...</section>;
   }
   if (error) {
