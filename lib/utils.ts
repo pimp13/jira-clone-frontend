@@ -7,6 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // My global utils
 export function generateInviteCode(lenght: number) {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
 }
