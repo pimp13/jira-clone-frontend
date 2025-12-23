@@ -52,7 +52,7 @@ export const WorkspaceSwitcher = () => {
           <SelectValue
             placeholder={
               workspaces?.data && workspaces.data.length !== 0
-                ? 'Show workspaces'
+                ? `Your workspace count ${workspaces.data.length}`
                 : 'No workspace'
             }
           />
