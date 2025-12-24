@@ -44,7 +44,7 @@ export const SignInCard = () => {
         values,
       );
 
-      if (resp.status === 201) {
+      if (resp.status === 200) {
         toast.success(resp.data?.message ?? 'Login is successfully!');
         router.push('/dashboard');
       }

@@ -7,7 +7,7 @@ const authRoutes = ['/sign-in', '/sign-up'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get('_token')?.value;
+  const token = request.cookies.get('_token_auth')?.value;
 
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route),

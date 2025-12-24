@@ -53,7 +53,7 @@ export const SignUpCard = () => {
         values,
       );
 
-      if (resp.status === 201) {
+      if (resp.status === 200) {
         toast.success(resp.data?.message ?? 'Register is successfully!');
         router.push('/sign-in');
       }
