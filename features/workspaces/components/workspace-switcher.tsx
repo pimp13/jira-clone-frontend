@@ -65,9 +65,13 @@ export const WorkspaceSwitcher = () => {
                 <div className="flex justify-start items-center gap-3 font-medium">
                   <WorkspaceAvatar
                     name={workspace?.name}
-                    fullDistination={workspace?.fullDestination}
+                    imageUrl={workspace?.imageUrl}
                   />
-                  <span className="truncate">{workspace.name}</span>
+                  <span className="truncate">
+                    {workspace.name}
+                    {/* {workspace.name.slice(0, 23)} */}
+                    {/* {workspace.name.length > 23 ? '...' : ''} */}
+                  </span>
                 </div>
               </SelectItem>
             ))}

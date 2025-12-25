@@ -25,7 +25,6 @@ export declare namespace ApiResponseType {
     slug: string;
     ownerId: string;
     imageUrl: string;
-    fullDestination: string;
     owner: UserInfo;
     createdAt: Date;
     updatedAt: Date;

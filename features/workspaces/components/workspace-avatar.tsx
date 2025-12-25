@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getPublicEnv } from '@/lib/get-env';
 
 type WorkspaceAvatarProps = {
-  fullDistination?: string;
+  imageUrl?: string;
   name: string;
   className?: string;
 };
@@ -14,24 +14,19 @@ type WorkspaceAvatarProps = {
 export const WorkspaceAvatar = ({
   name,
   className,
-  fullDistination,
+  imageUrl,
 }: WorkspaceAvatarProps) => {
   const nodeEnv = getPublicEnv('NEXT_PUBLIC_NODE_ENV');
-  if (fullDistination) {
+  if (imageUrl) {
     return (
       <div
         className={cn('size-10 relative rounded-md overflow-hidden', className)}
       >
         {/* TODO: change to production mode to Image */}
         {nodeEnv === 'development' ? (
-          <img src={fullDistination} alt={name} className="object-center" />
+          <img src={imageUrl} alt={name} className="object-center" />
         ) : (
-          <Image
-            src={fullDistination}
-            alt={name}
-            fill
-            className="object-center"
-          />
+          <Image src={imageUrl} alt={name} fill className="object-center" />
         )}
       </div>
     );
