@@ -42,7 +42,9 @@ axios.interceptors.response.use(
         // بهترین روش در App Router: استفاده از replace برای جلوگیری از برگشت به صفحه قبلی
         window.location.replace('/sign-in');
         // یا اگر می‌خوای query string هم بفرستی (مثل redirect_back)
-        // window.location.replace(`/sign-in?redirect=${encodeURIComponent(window.location.pathname)}`);
+        // window.location.replace(
+        //   `/sign-in?redirect=${encodeURIComponent(window.location.pathname)}`,
+        // );
       }
       // اگر در سرور بود (مثل getServerSideProps یا Server Component fetch)، خطا رو پرتاب می‌کنیم
       // تا صفحه 401 یا redirect در middleware یا layout مدیریت بشه (بهتره اونجا هندل کنی)
