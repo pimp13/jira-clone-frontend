@@ -16,23 +16,30 @@ import { useBackendApi } from '@/hooks/use-backend-api';
 import { ApiResponseType } from '@/types/api';
 import { RiAddCircleFill } from 'react-icons/ri';
 import { WorkspaceAvatar } from './workspace-avatar';
+import { useRouter } from 'next/navigation';
+import { useWorkspaceId } from '../hooks/use-workspace-id';
+import { WorkspaceSwitcherLoading } from './loading';
 
 export const WorkspaceSwitcher = () => {
+  const router = useRouter();
+  const workspaceId = useWorkspaceId();
+
   const {
     data: workspaces,
     error,
     isLoading,
   } = useBackendApi<ApiResponse<ApiResponseType.Workspace[]>>('/v1/workspace');
-  console.info('workspaces', workspaces);
 
   if (isLoading) {
-    return <section>Loading...</section>;
+    return <WorkspaceSwitcherLoading />;
   }
   if (error) {
     console.error('Error in get workspaces:', error);
   }
 
-  console.info(workspaces?.data);
+  const onSelect = (id: string) => {
+    router.push(`/dashboard/workspaces/${id}`);
+  };
 
   return (
     <section className="flex flex-col gap-y-2">
@@ -41,13 +48,13 @@ export const WorkspaceSwitcher = () => {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <RiAddCircleFill className="size-5 text-neutral-400 cursor-pointer hover:opacity-75 transition" />
+            <RiAddCircleFill className="size-5 text-neutral-500 cursor-pointer hover:opacity-70 transition" />
           </TooltipTrigger>
           <TooltipContent side="bottom">Add Workspace</TooltipContent>
         </Tooltip>
       </div>
 
-      <Select>
+      <Select onValueChange={onSelect} value={workspaceId}>
         <SelectTrigger className="w-full bg-neutral-200 font-medium p-3">
           <SelectValue
             placeholder={

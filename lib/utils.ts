@@ -6,8 +6,14 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // My global utils
-export function generateInviteCode(lenght: number) {
+export function generateInviteCode(lenght: number = 64) {
   const characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
+
   let result = '';
+  for (let i = 0; i < lenght; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return result;
 }
