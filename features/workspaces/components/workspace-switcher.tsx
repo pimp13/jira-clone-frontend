@@ -19,10 +19,12 @@ import { WorkspaceAvatar } from './workspace-avatar';
 import { useRouter } from 'next/navigation';
 import { useWorkspaceId } from '../hooks/use-workspace-id';
 import { WorkspaceSwitcherLoading } from './loading';
+import { useCreateWorkspaceModal } from '../hooks/use-create-workspace-modal';
 
 export const WorkspaceSwitcher = () => {
   const router = useRouter();
   const workspaceId = useWorkspaceId();
+  const { isOpen, setIsOpen, open } = useCreateWorkspaceModal();
 
   const {
     data: workspaces,
@@ -45,7 +47,10 @@ export const WorkspaceSwitcher = () => {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <RiAddCircleFill className="size-5 text-neutral-500 cursor-pointer hover:opacity-70 transition" />
+            <RiAddCircleFill
+              onClick={open}
+              className="size-5 text-neutral-500 cursor-pointer hover:opacity-70 transition"
+            />
           </TooltipTrigger>
           <TooltipContent side="bottom">Add Workspace</TooltipContent>
         </Tooltip>

@@ -2,8 +2,9 @@ import './globals.css';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { cn } from '@/lib/utils';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Toaster as Sonner } from '@/components/ui/sonner';
+import { cn } from '@/lib/utils';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -27,8 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, 'antialiased min-h-screen')}>
-        <Sonner />
-        {children}
+        <NuqsAdapter>
+          <Sonner />
+          {children}
+        </NuqsAdapter>
       </body>
     </html>
   );
