@@ -1,3 +1,10 @@
+// {
+//   "ok": true,
+//   "statusCode": 201,
+//   "message": "workspace is saved by successfully!",
+//   "data": {}
+// }
+
 export declare global {
   export type ApiResponse<T = any> = {
     ok: boolean;

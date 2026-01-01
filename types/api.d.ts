@@ -1,3 +1,5 @@
+//* API Response Types
+
 export declare namespace ApiResponseType {
   //* User Auth Types
   type RegisterUser = {

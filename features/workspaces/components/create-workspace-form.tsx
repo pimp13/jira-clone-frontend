@@ -1,11 +1,9 @@
 'use client';
 
-import z from 'zod';
-import { Controller } from 'react-hook-form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DottedSeparator } from '@/components/dotted-separator';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -20,9 +18,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ImageIcon, UploadIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRef } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import useSWRMutation from 'swr/mutation';
+import z from 'zod';
 import { createWorkspaceSchema } from '../schemas';
 
 interface CreateWorkspaceFormProps {
@@ -57,30 +56,38 @@ export const CreateWorkspaceForm = ({
         formData.append('image', arg.imageUrl);
       }
 
-      console.info('arg values', arg);
-      console.info('formData', formData);
-      const resp = await axios.post<ApiResponse<null>>(url, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const resp = await axios.post<ApiResponse<{ id: string }>>(
+        url,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        },
+      );
       return resp.data;
     },
     {
       // بعد از موفقیت، کش لیست workspaceها را revalidate کن
-      onSuccess: (data) => {
-        toast.success(data?.message ?? 'Workspace is created successfully!');
+      onSuccess: (data: ApiResponse<{ id: string }>) => {
+        if (data.ok) {
+          console.info('data onSuccess =>', data);
+          toast.success(data?.message ?? 'Workspace is created successfully!');
+          form.reset();
+          onSuccess?.();
 
-        form.reset();
-        onSuccess?.(); // مثلاً modal بسته بشه
+          // revalidate لیست workspaceها (کلید دقیقاً همون کلید useSWR در صفحه لیست)
+          // اگر در جای دیگه از useSWR('/v1/workspace') استفاده کردید
+          // این کار لیست را به‌روز می‌کنه
+          // import { mutate } from 'swr' در سطح global
+          import('swr').then(({ mutate }) => {
+            mutate(
+              (key) =>
+                typeof key === 'string' && key.startsWith('/v1/workspace'),
+            );
+          });
 
-        // revalidate لیست workspaceها (کلید دقیقاً همون کلید useSWR در صفحه لیست)
-        // اگر در جای دیگه از useSWR('/v1/workspace') استفاده کردید
-        // این کار لیست را به‌روز می‌کنه
-        // import { mutate } from 'swr' در سطح global
-        import('swr').then(({ mutate }) => {
-          mutate(
-            (key) => typeof key === 'string' && key.startsWith('/v1/workspace'),
-          );
-        });
+          // redirect to show workspace by id
+          // router.push(`/dashboard/workspaces/${data.data?.id}`);
+        }
       },
       onError: (err: any) => {
         const errMsg =
