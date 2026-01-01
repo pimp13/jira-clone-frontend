@@ -23,6 +23,7 @@ import { toast } from 'sonner';
 import useSWRMutation from 'swr/mutation';
 import z from 'zod';
 import { createWorkspaceSchema } from '../schemas';
+import { useRouter } from 'next/navigation';
 
 interface CreateWorkspaceFormProps {
   onCancel?: () => void;
@@ -33,6 +34,7 @@ export const CreateWorkspaceForm = ({
   onCancel,
   onSuccess,
 }: CreateWorkspaceFormProps) => {
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<z.infer<typeof createWorkspaceSchema>>({
@@ -72,7 +74,7 @@ export const CreateWorkspaceForm = ({
           console.info('data onSuccess =>', data);
           toast.success(data?.message ?? 'Workspace is created successfully!');
           form.reset();
-          onSuccess?.();
+          // onSuccess?.();
 
           // revalidate لیست workspaceها (کلید دقیقاً همون کلید useSWR در صفحه لیست)
           // اگر در جای دیگه از useSWR('/v1/workspace') استفاده کردید
@@ -86,7 +88,7 @@ export const CreateWorkspaceForm = ({
           });
 
           // redirect to show workspace by id
-          // router.push(`/dashboard/workspaces/${data.data?.id}`);
+          router.push(`/dashboard/workspaces/${data.data?.id}`);
         }
       },
       onError: (err: any) => {
