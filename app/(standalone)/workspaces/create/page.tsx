@@ -1,8 +1,11 @@
-const StandaloneWorkspacePage = () => {
+import { CreateWorkspaceForm } from "@/features/workspaces/components/create-workspace-form";
+
+const CreateWorkspacePage = () => {
   return (
-    <div>StandaloneWorkspacePage</div>
-  )
-}
+    <section className="w-full lg:max-w-xl">
+      <CreateWorkspaceForm />
+    </section>
+  );
+};
 
-
-export default StandaloneWorkspacePage;
+export default CreateWorkspacePage;

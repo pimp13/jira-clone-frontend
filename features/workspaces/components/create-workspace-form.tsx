@@ -24,6 +24,7 @@ import useSWRMutation from 'swr/mutation';
 import z from 'zod';
 import { createWorkspaceSchema } from '../schemas';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 interface CreateWorkspaceFormProps {
   onCancel?: () => void;
@@ -133,31 +134,9 @@ export const CreateWorkspaceForm = ({
             <div className="flex flex-col gap-y-4">
               {/* Workspace name input */}
               {/* Handle input */}
-              {/* <FormField
+              <FormField
                 name="name"
                 control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Workspace Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="text"
-                        placeholder="Enter workspace name"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
-
-              {/* Handle input by Controller */}
-              <Controller
-                control={form.control}
-                rules={{
-                  required: true,
-                }}
-                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Workspace Name</FormLabel>
@@ -238,6 +217,7 @@ export const CreateWorkspaceForm = ({
                 size="lg"
                 onClick={onCancel}
                 disabled={isMutating}
+                className={cn(onCancel ? 'visible' : 'invisible')}
               >
                 Cancel
               </Button>

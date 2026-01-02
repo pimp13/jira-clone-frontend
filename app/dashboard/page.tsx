@@ -1,24 +1,37 @@
 'use client';
 
-import { useCurrentUser } from '@/hooks/use-current-user';
+import { useRouter } from 'next/navigation';
+
+import { WorkspaceSwitcherLoading } from '@/features/workspaces/components/loading';
+import { useBackendApi } from '@/hooks/use-backend-api';
+import { ApiResponseType } from '@/types/api';
+import Link from 'next/link';
 
 const DashboardPage = () => {
-  const { user, isLoading } = useCurrentUser();
+  const router = useRouter();
+  const {
+    data: workspaces,
+    error,
+    isLoading,
+  } = useBackendApi<ApiResponse<ApiResponseType.Workspace[]>>('/v1/workspace');
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <WorkspaceSwitcherLoading />;
   }
 
-  if (!user?.data) {
-    return <div>User not found</div>;
+  if (workspaces?.data?.length === 0) {
+    return router.push('/workspace/create');
   }
 
   return (
     <section className="bg-stone-50 p-5 rounded-md">
-      <h1 className="text-lg">
-        <span>Welcome to the dashboard</span>&nbsp;
-        <span className="font-semibold">{user.data.name}</span>
-      </h1>
+      <h1 className="text-lg">Welcome to the dashboard</h1>
+      <p>Your workspace count {workspaces?.data?.length}</p>
+      <p>
+        <Link href={`/dashboard/workspaces/${workspaces?.data?.[0].id}`}>
+          Show first workspace
+        </Link>
+      </p>
     </section>
   );
 };

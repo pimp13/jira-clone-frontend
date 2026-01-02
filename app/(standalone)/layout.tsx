@@ -1,7 +1,7 @@
-import { UserButton } from '@/features/auth/components/user-button';
-import { LogoHeight, LogoWidth } from '@/utils/const';
-import Image from 'next/image';
 import Link from 'next/link';
+import Image from 'next/image';
+import { LogoHeight, LogoWidth } from '@/utils/const';
+import { UserButton } from '@/features/auth/components/user-button';
 
 type StandaloneLayoutProps = {
   children: Readonly<React.ReactNode>;
