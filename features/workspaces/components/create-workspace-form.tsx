@@ -217,12 +217,12 @@ export const CreateWorkspaceForm = ({
                 size="lg"
                 onClick={onCancel}
                 disabled={isMutating}
-                className={cn(onCancel ? 'visible' : 'invisible')}
+                className={cn(!onCancel && 'invisible')}
               >
                 Cancel
               </Button>
               <Button type="submit" size="lg" disabled={isMutating}>
-                {isMutating ? 'Creating...' : 'Create'}
+                {isMutating ? 'Creating Workspace...' : 'Create Workspace'}
               </Button>
             </div>
           </form>
