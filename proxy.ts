@@ -1,11 +1,16 @@
 import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-const protectedRoutes = ['/admin', '/profile', '/dashboard'];
+const protectedRoutes = [
+  '/admin',
+  '/profile',
+  '/dashboard',
+  '/workspaces',
+];
 
 const authRoutes = ['/sign-in', '/sign-up'];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('_token_auth')?.value;
 
