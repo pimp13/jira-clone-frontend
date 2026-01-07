@@ -12,7 +12,7 @@ export const Navbar = () => {
         </p>
       </div>
 
-      <Suspense fallback={'Loading ........'}>
+      <Suspense>
         <MobileSidebar />
       </Suspense>
       <UserButton />

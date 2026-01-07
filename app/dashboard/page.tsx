@@ -4,7 +4,7 @@ import { DashboardClient } from './components/dashboard-client';
 
 const DashboardPage = () => {
   return (
-    <Suspense fallback={<WorkspaceSwitcherLoading />}>
+    <Suspense>
       <DashboardClient />
     </Suspense>
   );

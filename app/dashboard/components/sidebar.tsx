@@ -20,7 +20,7 @@ export const Sidebar = () => {
       </Link>
 
       <DottedSeparator className="my-4" />
-      <Suspense fallback={'Loading ........'}>
+      <Suspense>
         <WorkspaceSwitcher />
       </Suspense>
 
