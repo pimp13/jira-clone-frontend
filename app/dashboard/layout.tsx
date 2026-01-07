@@ -2,6 +2,7 @@ import { CreateWorkspaceModal } from '@/features/workspaces/components/create-wo
 import { Navbar } from './components/navbar';
 import { Sidebar } from './components/sidebar';
 
+
 type DashboardLayoutProps = {
   children: Readonly<React.ReactNode>;
 };

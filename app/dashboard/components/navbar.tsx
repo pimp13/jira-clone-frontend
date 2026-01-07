@@ -1,5 +1,6 @@
 import { UserButton } from '@/features/auth/components/user-button';
 import { MobileSidebar } from './mobile-sidebar';
+import { Suspense } from 'react';
 
 export const Navbar = () => {
   return (
@@ -11,7 +12,9 @@ export const Navbar = () => {
         </p>
       </div>
 
-      <MobileSidebar />
+      <Suspense fallback={'Loading ........'}>
+        <MobileSidebar />
+      </Suspense>
       <UserButton />
     </nav>
   );
