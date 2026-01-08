@@ -1,7 +1,7 @@
 import { CreateWorkspaceModal } from '@/features/workspaces/components/create-workspace-modal';
+import { Suspense } from 'react';
 import { Navbar } from './components/navbar';
 import { Sidebar } from './components/sidebar';
-
 
 type DashboardLayoutProps = {
   children: Readonly<React.ReactNode>;
@@ -9,7 +9,7 @@ type DashboardLayoutProps = {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <>
+    <Suspense>
       <section className="min-h-screen">
         <CreateWorkspaceModal />
         <section className="flex w-full h-full">
@@ -26,7 +26,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           </section>
         </section>
       </section>
-    </>
+    </Suspense>
   );
 };
 
