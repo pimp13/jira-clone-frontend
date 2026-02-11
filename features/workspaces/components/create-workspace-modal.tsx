@@ -1,6 +1,6 @@
 'use client';
 
-import { ResponsiveModal } from '@/app/dashboard/components/responsive-modal';
+import { ResponsiveModal } from '@/app/dashboard/(panel)/components/responsive-modal';
 
 import { CreateWorkspaceForm } from './create-workspace-form';
 import { useCreateWorkspaceModal } from '../hooks/use-create-workspace-modal';

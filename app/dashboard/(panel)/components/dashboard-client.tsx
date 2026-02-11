@@ -22,7 +22,7 @@ export const DashboardClient = () => {
     <section className="bg-stone-50 p-5 rounded-md">
       <h1 className="text-lg">Welcome to the dashboard</h1>
       <p>Your workspace count {data?.data?.length}</p>
-      <Link href={`/dashboard/workspaces/${data?.data?.[0].id}`}>
+      <Link href={`/dashboard/workspace/${data?.data?.[0].id}`}>
         Show first workspace
       </Link>
     </section>

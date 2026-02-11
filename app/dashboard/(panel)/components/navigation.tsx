@@ -59,7 +59,7 @@ export const Navigation = ({ classNames }: NavigationProps) => {
     <nav>
       <ul className={cn(classNames ?? 'flex flex-col')}>
         {routes.map((item) => {
-          const fullHref = `/workspaces/${workspaceId}${item.href}`;
+          const fullHref = `/dashboard/workspaces/${workspaceId}${item.href}`;
           const isActive = pathname === fullHref;
           console.log(fullHref, isActive, pathname);
 

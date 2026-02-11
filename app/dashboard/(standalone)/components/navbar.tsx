@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { LogoHeight, LogoWidth } from '@/utils/const';
 import { UserButton } from '@/features/auth/components/user-button';
 import { useMedia } from 'react-use';
-import { Navigation } from '@/app/dashboard/components/navigation';
+import { Navigation } from '@/app/dashboard/(panel)/components/navigation';
 
 export const Navbar = () => {
   const isDesktop = useMedia('(min-width: 1024px)', true);

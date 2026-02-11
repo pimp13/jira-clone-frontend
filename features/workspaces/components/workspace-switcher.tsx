@@ -37,7 +37,7 @@ export const WorkspaceSwitcher = () => {
   }
 
   const onSelect = (id: string) => {
-    router.push(`/dashboard/workspaces/${id}`);
+    router.push(`/dashboard/workspace/${id}`);
   };
 
   return (

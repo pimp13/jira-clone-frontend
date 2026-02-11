@@ -1,9 +1,5 @@
 const UpdateWorkspacePage = () => {
-  return (
-    // <EditWorkspaceForm
-    <p>Edit workspace page</p>
-
-  );
+  return <p>Show workspace details</p>;
 };
 
 export default UpdateWorkspacePage;
