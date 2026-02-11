@@ -22,44 +22,47 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import useSWRMutation from 'swr/mutation';
 import z from 'zod';
-import { createWorkspaceSchema } from '../schemas';
+import { updateWorkspaceSchema } from '../schemas';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { Workspace } from '../types';
 
-interface CreateWorkspaceFormProps {
+interface EditWorkspaceFormProps {
   onCancel?: () => void;
   onSuccess?: () => void;
+  initialValues: Workspace;
 }
 
-export const CreateWorkspaceForm = ({
+export const EditWorkspaceForm = ({
   onCancel,
   onSuccess,
-}: CreateWorkspaceFormProps) => {
+  initialValues,
+}: EditWorkspaceFormProps) => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const form = useForm<z.infer<typeof createWorkspaceSchema>>({
-    resolver: zodResolver(createWorkspaceSchema),
+  const form = useForm<z.infer<typeof updateWorkspaceSchema>>({
+    resolver: zodResolver(updateWorkspaceSchema),
     defaultValues: {
-      name: '',
+      ...initialValues,
+      imageUrl: initialValues.imageUrl,
       image: null,
-      imageUrl: null,
     },
   });
 
   const { trigger, isMutating } = useSWRMutation(
-    '/v1/workspace',
+    `/v1/workspace/${initialValues.id}`,
     async (
       url: string,
-      { arg }: { arg: z.infer<typeof createWorkspaceSchema> },
+      { arg }: { arg: z.infer<typeof updateWorkspaceSchema> },
     ) => {
       const formData = new FormData();
-      formData.append('name', arg.name);
+      if (arg.name) formData.append('name', arg.name);
       if (arg.imageUrl instanceof File) {
         formData.append('image', arg.imageUrl);
       }
 
-      const resp = await axios.post<ApiResponse<{ id: string }>>(
+      const resp = await axios.patch<ApiResponse<{ id: string }>>(
         url,
         formData,
         {
@@ -100,7 +103,7 @@ export const CreateWorkspaceForm = ({
     },
   );
 
-  const onSubmit = async (values: z.infer<typeof createWorkspaceSchema>) => {
+  const onSubmit = async (values: z.infer<typeof updateWorkspaceSchema>) => {
     const finalValues = {
       ...values,
       // image: values.imageUrl instanceof File ? values.imageUrl : '',
@@ -120,7 +123,7 @@ export const CreateWorkspaceForm = ({
     <Card className="w-full h-full border-none">
       <CardHeader className="flex p-7">
         <CardTitle className="text-xl font-bold">
-          Create a new workspace
+          {initialValues.name}
         </CardTitle>
       </CardHeader>
 
