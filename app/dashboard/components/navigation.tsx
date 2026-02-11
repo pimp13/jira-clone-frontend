@@ -62,7 +62,7 @@ export const Navigation = ({ classNames }: NavigationProps) => {
           const fullHref = `/workspaces/${workspaceId}${item.href}`;
           const isActive = pathname === fullHref;
           console.log(fullHref, isActive, pathname);
-          
+
           const Icon = isActive ? item.activeIcon : item.icon;
 
           return (
