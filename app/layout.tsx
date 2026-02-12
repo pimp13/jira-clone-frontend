@@ -11,9 +11,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'JiraClone For Next And Nest js',
+  title: 'Apophis',
   description:
-    'Jira Clone Application Programmer Pouya Meke by NextJs and NestJs',
+    'Apophis is pouya ghazanfary weblog website',
+  authors: [{name: 'Pouya-Ghazanfary', url: 'https://apophis.ir'}],
 };
 
 export default function RootLayout({
