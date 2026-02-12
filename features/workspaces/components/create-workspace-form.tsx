@@ -89,7 +89,7 @@ export const CreateWorkspaceForm = ({
           });
 
           // redirect to show workspace by id
-          router.push(`/dashboard/workspaces/${data.data?.id}`);
+          router.push(`/dashboard/workspace/${data.data?.id}`);
         }
       },
       onError: (err: any) => {

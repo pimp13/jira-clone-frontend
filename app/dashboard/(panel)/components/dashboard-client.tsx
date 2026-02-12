@@ -14,7 +14,7 @@ export const DashboardClient = () => {
   if (isLoading) return <WorkspaceSwitcherLoading />;
 
   if (!data || !data.data || data.data.length === 0) {
-    router.push('/workspaces/create');
+    router.push('/dashboard/workspaces/create');
     // return null;
   }
 

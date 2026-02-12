@@ -24,7 +24,7 @@ type NavigationRoutes = {
 const routes: NavigationRoutes[] = [
   {
     label: 'Home',
-    href: '/',
+    href: '',
     icon: GoHome,
     activeIcon: GoHomeFill,
   },
@@ -59,10 +59,8 @@ export const Navigation = ({ classNames }: NavigationProps) => {
     <nav>
       <ul className={cn(classNames ?? 'flex flex-col')}>
         {routes.map((item) => {
-          const fullHref = `/dashboard/workspaces/${workspaceId}${item.href}`;
+          const fullHref = `/dashboard/${item.href === '' && item.label === 'Home' ? 'workspace' : 'workspaces'}/${workspaceId}${item.href}`;
           const isActive = pathname === fullHref;
-          console.log(fullHref, isActive, pathname);
-
           const Icon = isActive ? item.activeIcon : item.icon;
 
           return (
