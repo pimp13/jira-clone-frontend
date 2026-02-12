@@ -10,7 +10,7 @@ const WorkspaceSettingPage = async ({ params }: WorkspaceSettingProps) => {
   const { workspaceId } = await params;
   return (
     <div>
-      <EditWorkspaceForm />
+      {/* <EditWorkspaceForm /> */}
     </div>
   );
 };
