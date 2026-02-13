@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Code, Server, Terminal, Cpu } from "lucide-react";
+import Link from "next/link";
 
 
 
@@ -29,11 +30,12 @@ export default function IntroPage() {
           </p>
           <div className="mt-4">
             <Button
-              // as="a"
-              // href="#skills"
+              asChild
               className="bg-indigo-600 hover:bg-indigo-700 text-white"
             >
-              Explore My Skills
+              <Link href="/dashboard">
+                Explore My Skills
+              </Link>
             </Button>
           </div>
         </div>
