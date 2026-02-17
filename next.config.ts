@@ -1,8 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig = {
-  basePath: '/jira',
-  assetPrefix: '/jira/',
+  // basePath: '/jira',
+  // assetPrefix: '/jira/',
   images: {
     remotePatterns: [
       {
