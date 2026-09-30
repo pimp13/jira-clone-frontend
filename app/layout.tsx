@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
+import { QueryProvider } from '@/providers/QueryProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   title: 'Apophis',
   description:
     'Apophis is pouya ghazanfary weblog website',
-  authors: [{name: 'Pouya-Ghazanfary', url: 'https://apophis.ir'}],
+  authors: [{ name: 'Pouya-Ghazanfary', url: 'https://apophis.ir' }],
 };
 
 export default function RootLayout({
@@ -30,8 +31,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(inter.className, 'antialiased min-h-screen')}>
         <NuqsAdapter>
-          <Sonner />
-          {children}
+          <QueryProvider>
+            <Sonner />
+            {children}
+          </QueryProvider>
         </NuqsAdapter>
       </body>
     </html>

@@ -138,10 +138,10 @@ export default function RolesPage() {
           </div>
 
           <div className="flex items-center gap-6">
-            <Link href="/authorization/permissions" className="underline">
+            <Link href="/panel/authorization/permissions" className="underline">
               <Button>Permissions</Button>
             </Link>
-            <Link href="/react-query-v2" className="underline">
+            <Link href="/panel/users" className="underline">
               <Button>Users</Button>
             </Link>
             <Button onClick={() => open('create-role')}>
@@ -259,13 +259,13 @@ export default function RolesPage() {
                               </Button>
                             </DropdownMenuTrigger>
 
-                            <DropdownMenuContent className="bg-neutral-800" align="end">
-                              <DropdownMenuItem className="cursor-pointer hover:bg-gray-600 transition">
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem className="cursor-pointer transition">
                                 <Pencil className="mr-2 size-4" />
                                 Edit Role
                               </DropdownMenuItem>
 
-                              <DropdownMenuItem className="cursor-pointer hover:bg-gray-600 transition">
+                              <DropdownMenuItem className="cursor-pointer transition">
                                 <KeyRound className="mr-2 size-4" />
                                 Manage Permissions
                               </DropdownMenuItem>
@@ -273,7 +273,7 @@ export default function RolesPage() {
                               <DropdownMenuSeparator />
 
                               <DropdownMenuItem onClick={() => handleDeleteRole(+role.id)}
-                                className="text-destructive focus:text-destructive cursor-pointer hover:bg-gray-600 transition">
+                                className="text-destructive focus:text-destructive cursor-pointer transition">
                                 <Trash2 className="mr-2 size-4" />
                                 Delete Role
                               </DropdownMenuItem>

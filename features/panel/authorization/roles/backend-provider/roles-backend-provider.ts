@@ -1,5 +1,6 @@
-import { axios } from '@/lib/axios';
+import axios from 'axios';
 import { CreateRoleSchemaType } from '../schema/create-role.schema';
+import { API_URL as ApiUrlFromEnv } from '@/lib/urls';
 
 export interface Role {
   id: string | number;
@@ -9,8 +10,10 @@ export interface Role {
   updatedAt?: string;
 }
 
+const API_URL = !ApiUrlFromEnv.includes('/api') ? ApiUrlFromEnv + '/api' : ApiUrlFromEnv;
+
 export async function createNewRole(data: CreateRoleSchemaType): Promise<Role> {
-  const response = await axios.post(`/v1/roles`, data);
+  const response = await axios.post(`${API_URL}/v1/roles`, data);
 
   if (response.status !== 201) {
     throw new Error(response.data?.message ?? 'Error creating a new role');
@@ -20,7 +23,7 @@ export async function createNewRole(data: CreateRoleSchemaType): Promise<Role> {
 }
 
 export async function getAllRoles(): Promise<Role[]> {
-  const resp = await axios.get(`/v1/roles`);
+  const resp = await axios.get(`${API_URL}/v1/roles`);
 
   if (resp.status !== 200) {
     throw new Error(resp.data?.message ?? 'Error get all roles');
@@ -30,7 +33,7 @@ export async function getAllRoles(): Promise<Role[]> {
 }
 
 export async function deleteRoleById(id: number) {
-  const resp = await axios.delete(`/v1/roles/${id}`);
+  const resp = await axios.delete(`${API_URL}/v1/roles/${id}`);
 
   if (resp.status !== 200) {
     throw new Error(resp.data?.message ?? 'Error in delete role');
