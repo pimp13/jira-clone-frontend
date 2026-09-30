@@ -1,0 +1,23 @@
+name: next-jira-test-app-dev
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: next-jira-test-app:dev
+    container_name: next_jira_test_app_dev
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3002:3002"
+    volumes:
+      # Mount کردن سورس کد برای Hot Reload
+      - .:/app
+      # محافظت از node_modules داخل کانتینر
+      - /app/node_modules
+      # (اختیاری) برای Turbopack
+      - /app/.next
+    restart: unless-stopped
