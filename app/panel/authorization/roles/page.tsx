@@ -141,7 +141,7 @@ export default function RolesPage() {
             <Link href="/panel/authorization/permissions" className="underline">
               <Button>Permissions</Button>
             </Link>
-            <Link href="/panel/users" className="underline">
+            <Link href="/panel/authorization/users" className="underline">
               <Button>Users</Button>
             </Link>
             <Button onClick={() => open('create-role')}>
