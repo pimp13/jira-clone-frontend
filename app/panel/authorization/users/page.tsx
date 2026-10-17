@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   UserRound,
   Plus,
@@ -35,8 +35,7 @@ import { BeautifulModal } from "@/components/BeautifulModal";
 import { useModalStore } from "@/stores/useModalStore";
 import { UsersTable } from "@/features/panel/authorization/users/components/UsersTable";
 import { CreateUserForm } from "@/features/panel/authorization/users/components/CreateUserForm";
-import { useQuery } from "@tanstack/react-query";
-import { fetchUsersAll } from "@/features/panel/authorization/users/backend-provider/users-backend-provider";
+import { useUser } from "@/features/panel/authorization/users/hooks/use-user";
 
 
 export interface User {
@@ -148,11 +147,7 @@ export default function UsersPage() {
     isPending,
     isError,
     error,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: fetchUsersAll,
-  });
-
+  } = useUser();
 
 
   const roles = useMemo(() => {
@@ -196,7 +191,8 @@ export default function UsersPage() {
     });
   }, [users, search, roleFilter, statusFilter]);
 
-
+  if (isPending) return <p>Loading...</p>;
+  if (isError) return <p>Errro: {error.message}</p>;
 
   const totalUsers = users?.length;
 
