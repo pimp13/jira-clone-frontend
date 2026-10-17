@@ -40,7 +40,7 @@ import {
 } from "@/components/ui/card";
 
 import { useState } from "react";
-import { CreateUserFormValues, createUserSchema } from "../schemas";
+import { CreateUserFormInput, CreateUserFormValues, createUserSchema } from "../schemas";
 import { useCreateUser } from "../hooks/use-create-user";
 
 type CreateUserFormProps = {
@@ -68,13 +68,13 @@ export function CreateUserForm({
   const [showPassword, setShowPassword] =
     useState(false);
 
-  const defaultValues = useMemo<CreateUserFormValues>(
+  const defaultValues = useMemo<CreateUserFormInput>(
     () => ({
       name: "",
       username: "",
       email: "",
       password: "",
-      roleId: "",
+      roleId: '',
       isActive: true,
     }),
     []
@@ -82,39 +82,25 @@ export function CreateUserForm({
 
   const createUserMutation = useCreateUser();
 
+
   const form = useForm<CreateUserFormValues>({
     resolver: zodResolver(createUserSchema),
     defaultValues,
   });
 
-  const onSubmit = async (
-    values: CreateUserFormValues
-  ) => {
+  const onSubmit = async (values: CreateUserFormValues) => {
     try {
-      await createUserMutation.mutateAsync(values);
-
-      console.log("Create user:", {
+      await createUserMutation.mutateAsync({
         ...values,
-        roleId: Number(values.roleId),
+        roleId: Number(values.roleId), // ← تبدیل اینجا
       });
 
-      toast.success(
-        "User created successfully!"
-      );
-
+      toast.success("User created successfully!");
       form.reset();
-
-      // Close modal after successful creation
       close();
     } catch (error) {
-      console.error(
-        "Failed to create user:",
-        error
-      );
-
-      toast.error(
-        "Failed to create user. Please try again."
-      );
+      console.error("Failed to create user:", error);
+      toast.error("Failed to create user. Please try again.");
     }
   };
 

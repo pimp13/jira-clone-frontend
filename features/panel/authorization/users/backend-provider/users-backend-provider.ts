@@ -1,5 +1,5 @@
 import { axios } from "@/lib/axios";
-import { CreateUserFormValues } from "../schemas";
+import { CreateUserFormInput, CreateUserFormValues } from "../schemas";
 
 export interface User {
   id: number;
@@ -36,7 +36,14 @@ export async function fetchUsersAll(): Promise<User[] | null> {
 }
 
 
-export async function createUser(data: CreateUserFormValues) {
+export async function createUser(data: {
+  name?: string | undefined;
+  username: string;
+  email: string;
+  password: string;
+  roleId: number;
+  isActive: boolean;
+}) {
   try {
     const res = await fetch(`${API_URL}/users`, {
       method: 'post',

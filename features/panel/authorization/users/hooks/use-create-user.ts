@@ -6,7 +6,14 @@ export function useCreateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (bd: CreateUserFormValues) => createUser(bd),
+    mutationFn: (bd: {
+      name?: string | undefined;
+      username: string;
+      email: string;
+      password: string;
+      roleId: number;
+      isActive: boolean;
+    }) => createUser(bd),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
