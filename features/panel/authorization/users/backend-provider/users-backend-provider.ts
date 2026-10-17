@@ -40,7 +40,11 @@ export async function createUser(data: CreateUserFormValues) {
   try {
     const res = await fetch(`${API_URL}/users`, {
       method: 'post',
-      credentials: 'include'
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
     });
     const result = await res.json();
     return result?.data || {};

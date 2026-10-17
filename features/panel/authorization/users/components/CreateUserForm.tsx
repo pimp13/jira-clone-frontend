@@ -41,6 +41,7 @@ import {
 
 import { useState } from "react";
 import { CreateUserFormValues, createUserSchema } from "../schemas";
+import { useCreateUser } from "../hooks/use-create-user";
 
 type CreateUserFormProps = {
   close: () => void;
@@ -79,6 +80,8 @@ export function CreateUserForm({
     []
   );
 
+  const createUserMutation = useCreateUser();
+
   const form = useForm<CreateUserFormValues>({
     resolver: zodResolver(createUserSchema),
     defaultValues,
@@ -88,20 +91,7 @@ export function CreateUserForm({
     values: CreateUserFormValues
   ) => {
     try {
-      /*
-       * Connect your API here.
-       *
-       * Example:
-       *
-       * await createUser({
-       *   name: values.name || null,
-       *   username: values.username,
-       *   email: values.email,
-       *   password: values.password,
-       *   roleId: Number(values.roleId),
-       *   isActive: values.isActive,
-       * });
-       */
+      await createUserMutation.mutateAsync(values);
 
       console.log("Create user:", {
         ...values,
