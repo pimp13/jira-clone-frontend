@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   UserRound,
   Plus,
@@ -35,6 +35,8 @@ import { BeautifulModal } from "@/components/BeautifulModal";
 import { useModalStore } from "@/stores/useModalStore";
 import { UsersTable } from "@/features/panel/authorization/users/components/UsersTable";
 import { CreateUserForm } from "@/features/panel/authorization/users/components/CreateUserForm";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUsersAll } from "@/features/panel/authorization/users/backend-provider/users-backend-provider";
 
 
 export interface User {
@@ -141,14 +143,22 @@ export default function UsersPage() {
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
 
+  const {
+    data: users,
+    isPending,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsersAll,
+  });
 
 
-  const users = MOCK_USERS;
 
   const roles = useMemo(() => {
     const uniqueRoles = new Map<number, string>();
 
-    users.forEach((user) => {
+    users?.forEach((user) => {
       uniqueRoles.set(user.role.id, user.role.name);
     });
 
@@ -161,7 +171,7 @@ export default function UsersPage() {
   const filteredUsers = useMemo(() => {
     const value = search.trim().toLowerCase();
 
-    return users.filter((user) => {
+    return users?.filter((user) => {
       const matchesSearch =
         !value ||
         user.name?.toLowerCase().includes(value) ||
@@ -188,17 +198,17 @@ export default function UsersPage() {
 
 
 
-  const totalUsers = users.length;
+  const totalUsers = users?.length;
 
-  const activeUsers = users.filter(
+  const activeUsers = users?.filter(
     (user) => user.isActive
   ).length;
 
-  const inactiveUsers = users.filter(
+  const inactiveUsers = users?.filter(
     (user) => !user.isActive
   ).length;
 
-  const adminUsers = users.filter(
+  const adminUsers = users?.filter(
     (user) =>
       user.role.name.toLowerCase() === "administrator"
   ).length;
@@ -385,17 +395,17 @@ export default function UsersPage() {
           </CardHeader>
 
           <CardContent>
-            <UsersTable users={filteredUsers} />
+            <UsersTable users={filteredUsers || []} />
 
             <div className="mt-4 flex flex-col gap-2 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
               <span>
                 Showing{" "}
                 <span className="font-medium">
-                  {filteredUsers.length}
+                  {filteredUsers?.length}
                 </span>{" "}
                 of{" "}
                 <span className="font-medium">
-                  {users.length}
+                  {users?.length}
                 </span>{" "}
                 users
               </span>
