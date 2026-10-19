@@ -56,17 +56,17 @@ const navigation: NavigationItem[] = [
     children: [
       {
         title: "Users",
-        href: "/admin/users",
+        href: "/panel/authorization/users",
         icon: UserRound,
       },
       {
         title: "Roles",
-        href: "/authorization/roles",
+        href: "/panel/authorization/roles",
         icon: ShieldCheck,
       },
       {
         title: "Permissions",
-        href: "/authorization/permissions",
+        href: "/panel/authorization/permissions",
         icon: LockKeyhole,
       },
     ],
