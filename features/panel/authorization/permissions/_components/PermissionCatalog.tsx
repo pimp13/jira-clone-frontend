@@ -48,7 +48,6 @@ export function PermissionCatalog() {
     isError,
     error, } = usePermissions();
 
-
   // const filteredPermissions = useMemo(() => {
   //   const value = search.toLowerCase();
 
@@ -62,8 +61,6 @@ export function PermissionCatalog() {
 
   if (isPending) return <p>Loading...</p>;
   if (isError) return <p>Error: {error?.message}</p>;
-
-  console.log(permissions);
 
   return (
     <Card>
@@ -146,7 +143,7 @@ export function PermissionCatalog() {
 
                   <TableCell>
                     <Badge variant="outline">
-                      3 roles
+                      {permission._count.roles ?? 0} role
                     </Badge>
                   </TableCell>
 

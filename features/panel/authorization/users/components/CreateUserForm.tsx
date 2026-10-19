@@ -14,7 +14,6 @@ import { toast } from 'sonner';
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import {
@@ -34,33 +33,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
-
 import { useState } from "react";
 import { CreateUserFormInput, CreateUserFormValues, createUserSchema } from "../schemas";
 import { useCreateUser } from "../hooks/use-create-user";
+import { useRoles } from "../../roles/hooks/use-roles";
 
 type CreateUserFormProps = {
   close: () => void;
 }
 
-const roles = [
-  {
-    id: 1,
-    name: "Administrator",
-  },
-  {
-    id: 2,
-    name: "Editor",
-  },
-  {
-    id: 3,
-    name: "Author",
-  },
-];
 
 export function CreateUserForm({
   close,
@@ -81,6 +62,7 @@ export function CreateUserForm({
   );
 
   const createUserMutation = useCreateUser();
+  const { data: roles, isPending: rolesPending } = useRoles();
 
 
   const form = useForm<CreateUserFormValues>({
@@ -92,7 +74,7 @@ export function CreateUserForm({
     try {
       await createUserMutation.mutateAsync({
         ...values,
-        roleId: Number(values.roleId), // ← تبدیل اینجا
+        roleId: Number(values.roleId),
       });
 
       toast.success("User created successfully!");
@@ -103,6 +85,8 @@ export function CreateUserForm({
       toast.error("Failed to create user. Please try again.");
     }
   };
+
+  if (rolesPending) return <p>Loading roles...</p>;
 
   return (
     <Form {...form}>
@@ -282,7 +266,7 @@ export function CreateUserForm({
                 </FormControl>
 
                 <SelectContent>
-                  {roles.map((role) => (
+                  {roles && roles.map((role) => (
                     <SelectItem
                       key={role.id}
                       value={String(role.id)}

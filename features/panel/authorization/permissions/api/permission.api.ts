@@ -77,7 +77,6 @@ export async function getRolePermissions(roleId: number) {
 }
 
 
-
 export async function assignPermissionToRole(
   roleId: number,
   permissionId: number

@@ -4,6 +4,9 @@ export interface Permission {
   resource: string;
   action: string;
   description?: string | null;
+  _count: {
+    roles: number;
+  };
   createdAt: string;
   updatedAt: string;
 }

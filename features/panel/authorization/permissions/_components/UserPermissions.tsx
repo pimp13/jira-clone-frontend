@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Check, UserRound } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -14,182 +14,159 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const users = [
-  {
-    id: 1,
-    username: "admin",
-    email: "admin@example.com",
-    role: "Administrator",
-  },
-  {
-    id: 2,
-    username: "john",
-    email: "john@example.com",
-    role: "Editor",
-  },
-  {
-    id: 3,
-    username: "alice",
-    email: "alice@example.com",
-    role: "Author",
-  },
-];
-
-const rolePermissions = {
-  Administrator: [
-    "users.create",
-    "users.read",
-    "users.update",
-    "users.delete",
-    "posts.create",
-    "posts.read",
-    "posts.update",
-    "posts.delete",
-    "roles.create",
-    "roles.read",
-    "roles.update",
-    "roles.delete",
-  ],
-
-  Editor: [
-    "users.read",
-    "users.update",
-    "posts.create",
-    "posts.read",
-    "posts.update",
-    "roles.read",
-  ],
-
-  Author: [
-    "posts.create",
-    "posts.read",
-  ],
-};
+import { useUsers } from "../hooks/use-users";
+import { useRolePermissions } from "../hooks/use-role-permissions";
 
 export function UserPermissions() {
-  const [selectedUser, setSelectedUser] = useState("1");
+  const { data: users, isPending: usersLoading } = useUsers();
 
-  const user = users.find(
-    (user) => String(user.id) === selectedUser
+  const [selectedUserId, setSelectedUserId] = useState<string>("");
+
+  // وقتی یوزرها لود شدن، اولین یوزر رو انتخاب کن
+  useEffect(() => {
+    if (users && users.length > 0 && !selectedUserId) {
+      setSelectedUserId(String(users[0].id));
+    }
+  }, [users, selectedUserId]);
+
+  const selectedUser = users?.find(
+    (user: any) => String(user.id) === selectedUserId
   );
 
-  const permissions =
-    rolePermissions[
-    user?.role as keyof typeof rolePermissions
-    ] ?? [];
+  // فرض: user.roleId یا user.role?.id
+  const roleId = selectedUser?.roleId ?? selectedUser?.role?.id ?? null;
+
+  const {
+    data: permissions,
+    isPending: permissionsLoading,
+  } = useRolePermissions(roleId);
+
+  // permissions می‌تونه آرایه‌ای از object باشه یا string
+  // اینجا فرض می‌کنیم شکلش اینه:
+  // [{ id, name, resource, action }] یا [{ permission: { name, resource, action } }]
+  const normalizedPermissions: any[] = useMemo(() => {
+    if (!permissions) return [];
+
+    return permissions.map((item: any) => {
+      // اگر مستقیم permission باشه
+      if (item.name && item.resource) return item;
+      // اگر داخل relation باشه
+      return item.permission ?? item;
+    });
+  }, [permissions]);
 
   const groupedPermissions = useMemo(() => {
-    return permissions.reduce<Record<string, string[]>>(
-      (groups, permission) => {
-        const [resource, action] =
-          permission.split(".");
+    return normalizedPermissions.reduce<
+      Record<string, { action: string; name: string }[]>
+    >((groups, permission) => {
+      const resource = permission.resource ?? permission.name?.split(".")[0];
+      const action = permission.action ?? permission.name?.split(".")[1];
 
-        if (!groups[resource]) {
-          groups[resource] = [];
-        }
+      if (!resource || !action) return groups;
 
-        groups[resource].push(action);
+      if (!groups[resource]) {
+        groups[resource] = [];
+      }
 
-        return groups;
-      },
-      {}
-    );
-  }, [permissions]);
+      groups[resource].push({
+        action,
+        name: permission.name,
+      });
+
+      return groups;
+    }, {});
+  }, [normalizedPermissions]);
+
+  if (usersLoading) {
+    return <p className="p-6 text-muted-foreground">Loading users...</p>;
+  }
+
+  if (!users?.length) {
+    return <p className="p-6 text-muted-foreground">No users found.</p>;
+  }
 
   return (
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
           <UserRound className="size-5" />
-
-          <CardTitle>
-            User Access
-          </CardTitle>
+          <CardTitle>User Access</CardTitle>
         </div>
 
         <p className="text-sm text-muted-foreground">
-          View the effective permissions inherited by a user
-          through their assigned role.
+          View the effective permissions inherited by a user through their
+          assigned role.
         </p>
       </CardHeader>
 
       <CardContent className="space-y-6">
-
-        <Select
-          value={selectedUser}
-          onValueChange={setSelectedUser}
-        >
+        <Select value={selectedUserId} onValueChange={setSelectedUserId}>
           <SelectTrigger className="max-w-md">
-            <SelectValue />
+            <SelectValue placeholder="Select a user" />
           </SelectTrigger>
 
           <SelectContent>
-            {users.map((user) => (
-              <SelectItem
-                key={user.id}
-                value={String(user.id)}
-              >
+            {users.map((user: any) => (
+              <SelectItem key={user.id} value={String(user.id)}>
                 {user.username} — {user.email}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
-        {user && (
+        {selectedUser && (
           <>
             <div className="flex items-center justify-between rounded-lg border bg-muted/30 p-4">
               <div>
-                <p className="font-medium">
-                  {user.username}
-                </p>
-
+                <p className="font-medium">{selectedUser.username}</p>
                 <p className="text-sm text-muted-foreground">
-                  {user.email}
+                  {selectedUser.email}
                 </p>
               </div>
 
               <Badge>
-                {user.role}
+                {selectedUser.role?.name ?? selectedUser.role ?? "No role"}
               </Badge>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {Object.entries(
-                groupedPermissions
-              ).map(([resource, actions]) => (
-                <div
-                  key={resource}
-                  className="rounded-lg border p-4"
-                >
-                  <div className="mb-3">
-                    <p className="font-medium capitalize">
-                      {resource}
-                    </p>
-
-                    <p className="text-xs text-muted-foreground">
-                      {actions.length} permissions
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    {actions.map((action) => (
-                      <div
-                        key={action}
-                        className="flex items-center gap-2 text-sm"
-                      >
-                        <div className="flex size-5 items-center justify-center rounded-full bg-primary/10">
-                          <Check className="size-3 text-primary" />
-                        </div>
-
-                        <span className="capitalize">
-                          {action}
-                        </span>
+            {permissionsLoading ? (
+              <p className="text-sm text-muted-foreground">
+                Loading permissions...
+              </p>
+            ) : Object.keys(groupedPermissions).length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                This user has no permissions.
+              </p>
+            ) : (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {Object.entries(groupedPermissions).map(
+                  ([resource, actions]) => (
+                    <div key={resource} className="rounded-lg border p-4">
+                      <div className="mb-3">
+                        <p className="font-medium capitalize">{resource}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {actions.length} permissions
+                        </p>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+
+                      <div className="space-y-2">
+                        {actions.map((item) => (
+                          <div
+                            key={item.name}
+                            className="flex items-center gap-2 text-sm"
+                          >
+                            <div className="flex size-5 items-center justify-center rounded-full bg-primary/10">
+                              <Check className="size-3 text-primary" />
+                            </div>
+                            <span className="capitalize">{item.action}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+            )}
           </>
         )}
       </CardContent>
