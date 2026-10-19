@@ -37,79 +37,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePermissions } from "../hooks/use-permissions";
 
-const permissions = [
-  {
-    id: 1,
-    name: "users.create",
-    resource: "users",
-    action: "create",
-    description: "Create new users",
-  },
-  {
-    id: 2,
-    name: "users.read",
-    resource: "users",
-    action: "read",
-    description: "View users",
-  },
-  {
-    id: 3,
-    name: "users.update",
-    resource: "users",
-    action: "update",
-    description: "Update users",
-  },
-  {
-    id: 4,
-    name: "users.delete",
-    resource: "users",
-    action: "delete",
-    description: "Delete users",
-  },
-  {
-    id: 5,
-    name: "posts.create",
-    resource: "posts",
-    action: "create",
-    description: "Create posts",
-  },
-  {
-    id: 6,
-    name: "posts.read",
-    resource: "posts",
-    action: "read",
-    description: "View posts",
-  },
-  {
-    id: 7,
-    name: "posts.update",
-    resource: "posts",
-    action: "update",
-    description: "Update posts",
-  },
-  {
-    id: 8,
-    name: "posts.delete",
-    resource: "posts",
-    action: "delete",
-    description: "Delete posts",
-  },
-];
 
 export function PermissionCatalog() {
   const [search, setSearch] = useState("");
 
-  const filteredPermissions = useMemo(() => {
-    const value = search.toLowerCase();
+  const { data: permissions,
+    isPending,
+    isError,
+    error, } = usePermissions();
 
-    return permissions.filter(
-      (permission) =>
-        permission.name.toLowerCase().includes(value) ||
-        permission.resource.toLowerCase().includes(value) ||
-        permission.action.toLowerCase().includes(value)
-    );
-  }, [search]);
+
+  // const filteredPermissions = useMemo(() => {
+  //   const value = search.toLowerCase();
+
+  //   return permissions?.filter(
+  //     (permission) =>
+  //       permission.name.toLowerCase().includes(value) ||
+  //       permission.resource.toLowerCase().includes(value) ||
+  //       permission.action.toLowerCase().includes(value)
+  //   );
+  // }, [search]);
+
+  if (isPending) return <p>Loading...</p>;
+  if (isError) return <p>Error: {error?.message}</p>;
+
+  console.log(permissions);
 
   return (
     <Card>
@@ -151,7 +105,7 @@ export function PermissionCatalog() {
             </TableHeader>
 
             <TableBody>
-              {filteredPermissions.map((permission) => (
+              {permissions?.map((permission) => (
                 <TableRow key={permission.id}>
 
                   <TableCell>
