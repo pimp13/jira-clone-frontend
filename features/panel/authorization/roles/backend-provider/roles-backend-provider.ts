@@ -1,11 +1,16 @@
 import axios from 'axios';
 import { CreateRoleSchemaType } from '../schema/create-role.schema';
 import { API_URL as ApiUrlFromEnv } from '@/lib/urls';
+import { Permission } from '../../permissions/types/permission.types';
 
 export interface Role {
   id: string | number;
   name: string;
   description?: string | null;
+  permissions: Permission[];
+  _count: {
+    users: number
+  };
   createdAt?: string;
   updatedAt?: string;
 }

@@ -83,7 +83,7 @@ export async function assignPermissionToRole(
   permissionId: number
 ) {
   const response = await fetch(
-    `${API_URL}/roles/${roleId}/permissions/${permissionId}`,
+    `${API_URL}/permissions/${permissionId}/roles/${roleId}`,
     {
       method: "POST",
     }
@@ -102,7 +102,7 @@ export async function removePermissionFromRole(
   permissionId: number
 ) {
   const response = await fetch(
-    `${API_URL}/roles/${roleId}/permissions/${permissionId}`,
+    `${API_URL}/permissions/${permissionId}/roles/${roleId}`,
     {
       method: "DELETE",
     }
