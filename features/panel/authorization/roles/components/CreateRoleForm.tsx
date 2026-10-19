@@ -70,10 +70,10 @@ export function CreateRoleForm({ close }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create User</CardTitle>
+        <CardTitle>Create New Role</CardTitle>
 
         <CardDescription>
-          Enter the information for the new user.
+          Enter the information for the new role.
         </CardDescription>
       </CardHeader>
 

@@ -43,6 +43,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { deleteRoleById, getAllRoles } from "@/features/panel/authorization/roles/backend-provider/roles-backend-provider";
+import { ResponsiveModal } from "@/app/dashboard/(panel)/components/responsive-modal";
 
 
 export default function RolesPage() {
@@ -324,15 +325,13 @@ export default function RolesPage() {
         </Card>
       </div>
 
-      <BeautifulModal
-        open={openModal === 'create-role'}
+      <ResponsiveModal
         onOpenChange={(open) => !open && close()}
-        title="Create Role"
-        description="Create a new role."
-        isShowBtns={false}
-      >
-        <CreateRoleForm close={close} />
-      </BeautifulModal>
+        open={openModal === 'create-role'}>
+        <div className="py-10 px-5">
+          <CreateRoleForm close={close} />
+        </div>
+      </ResponsiveModal>
     </>
   );
 }

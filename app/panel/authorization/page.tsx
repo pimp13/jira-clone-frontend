@@ -1,5 +1,5 @@
 export default function AuthorizationPage() {
     return (
-        <div>authorization page</div>
+        <div className="p-10">authorization page</div>
     )
 }
