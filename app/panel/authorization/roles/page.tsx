@@ -327,7 +327,8 @@ export default function RolesPage() {
 
       <ResponsiveModal
         onOpenChange={(open) => !open && close()}
-        open={openModal === 'create-role'}>
+        open={openModal === 'create-role'}
+      >
         <div className="py-10 px-5">
           <CreateRoleForm close={close} />
         </div>
